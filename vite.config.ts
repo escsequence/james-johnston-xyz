@@ -5,20 +5,27 @@ import path from 'path'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
+export default defineConfig(({ command }) => {
+  const isDev = command === 'serve'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(), 
-    Components({
-      dts: true,
-      resolvers: [NaiveUiResolver()]
-    })],
-  server: {
-    host: 'jamesjohnston.local',
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'certs/jamesjohnston.local-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'certs/jamesjohnston.local.pem')),
-    }
-  },
+  return {
+    plugins: [
+      vue(),
+      Components({
+        dts: true,
+        resolvers: [NaiveUiResolver()]
+      })
+    ],
+
+    // Only enable HTTPS locally
+    server: isDev
+      ? {
+          host: 'jamesjohnston.local',
+          https: {
+            key: fs.readFileSync(path.resolve(__dirname, 'certs/jamesjohnston.local-key.pem')),
+            cert: fs.readFileSync(path.resolve(__dirname, 'certs/jamesjohnston.local.pem'))
+          }
+        }
+      : undefined
+  }
 })
