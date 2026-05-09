@@ -16,7 +16,6 @@ const count = ref(0)
     </div>
     <div>
       <h1>Get started</h1>
-      <h2>Hello</h2>
       <p>Edit <code>src/App.vue</code> and save to test <code>HMR</code></p>
     </div>
     <button type="button" class="counter" @click="count++">
